@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>BLC Team Website :: Tryouts</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<header class="site-header">
+
+  <div class="brand">
+    <a href="index.html">
+      <img src="logo.webp" alt="BLC Logo">
+    </a>
+  </div>
+
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="matches.html">Matches</a></li>
+      <li><a href="roster.html">Roster</a></li>
+      <li><a href="scrims.html">Scrims</a></li>
+      <li><a href="tryouts.html" class="active">Tryouts</a></li>
+    </ul>
+  </nav>
+
+</header>
+
+<div id="wrapper">
+
+  <section class="tryout-hero">
+
+    <div class="tryout-overlay">
+
+      <h3>Join BLC</h3>
+
+      <p>
+        Interested in joining Big Little Company?
+        Submit an application below for either the Breachers roster
+        or the VAIL roster.
+      </p>
+
+    </div>
+
+  </section>
+
+  <section class="tryout-grid">
+
+    <div class="requirement-card">
+
+      <h3>Requirements</h3>
+
+      <ul>
+        <li>Be based in North America (exceptions may be made)</li>
+        <li>No one under 16 years of age</li>
+        <li>Follow the IGL or team as a collective</li>
+        <li>Try your best to be respectful towards others</li>
+        <li>Do not have or develop a huge ego</li>
+        <li>Focus on improving and having fun with the team</li>
+      </ul>
+
+    </div>
+
+    <div class="form-card">
+
+      <h3>Tryout Application</h3>
+
+      <form id="tryoutForm">
+
+        <label for="gamertag">Gamertag</label>
+        <input type="text" id="gamertag" required>
+
+        <label for="discord">Discord Username</label>
+        <input type="text" id="discord" required>
+
+        <label for="game">Game Tryout</label>
+
+        <select id="game" required>
+
+          <option value="">Choose a game</option>
+          <option value="Breachers">Breachers</option>
+          <option value="VAIL">VAIL</option>
+
+        </select>
+
+        <label for="role">Preferred Role</label>
+        <input type="text" id="role" required>
+
+        <label for="availability">Availability</label>
+        <input type="text" id="availability" required>
+
+        <label for="message">Why do you want to join?</label>
+        <textarea id="message" required></textarea>
+
+        <input type="submit" value="Submit Application">
+
+      </form>
+
+      <p id="submissionMessage"></p>
+
+    </div>
+
+  </section>
+
+</div>
+
+<footer>
+  Copyright © 2026 Big Little Company | BLC
+</footer>
+
+<script>
+const form = document.getElementById("tryoutForm");
+
+form.addEventListener("submit", async function(e) {
+  e.preventDefault();
+
+  const gamertag = document.getElementById("gamertag").value;
+  const discord = document.getElementById("discord").value;
+  const game = document.getElementById("game").value;
+  const role = document.getElementById("role").value;
+  const availability = document.getElementById("availability").value;
+  const message = document.getElementById("message").value;
+
+  const webhookURL = "https://canary.discord.com/api/webhooks/1507491236179873813/oO_yCCqPvyCf83J8Ax2LxR-z0jvDIOUvbKZj8lq4mttjRS3RDKl6g-EoEZOJA3qJvgE-";
+
+  let mention = "";
+
+  if (game === "Breachers") {
+    mention = "<@1502149256792899684>";
+  } else if (game === "VAIL") {
+    mention = "<@1126953377746665552>";
+  }
+
+  const discordMessage = {
+    content:
+      mention + "\n\n" +
+      "**New BLC Tryout Application**\n\n" +
+      "**Game Tryout:** " + game + "\n" +
+      "**Gamertag:** " + gamertag + "\n" +
+      "**Discord:** " + discord + "\n" +
+      "**Preferred Role:** " + role + "\n" +
+      "**Availability:** " + availability + "\n" +
+      "**Why they want to join:** " + message
+  };
+
+  try {
+    await fetch(webhookURL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(discordMessage)
+    });
+
+    document.getElementById("submissionMessage").innerHTML =
+      "Application submitted successfully!";
+
+    form.reset();
+  } catch(error) {
+    document.getElementById("submissionMessage").innerHTML =
+      "There was an error submitting the application.";
+  }
+});
+</script>
+
+</body>
+</html>

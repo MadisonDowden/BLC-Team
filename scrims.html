@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>BLC Team Website :: Scrims</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<header class="site-header">
+  <div class="brand">
+    <img src="logo.webp" alt="BLC Logo">
+  </div>
+
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="matches.html">Matches</a></li>
+      <li><a href="roster.html">Roster</a></li>
+      <li><a href="scrims.html">Scrims</a></li>
+      <li><a href="tryouts.html">Tryouts</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div id="wrapper">
+
+  <section class="page-title">
+    <h2>Team <span>Scrims</span></h2>
+    <p>Competitive Match Requests</p>
+  </section>
+
+  <section class="scrim-hero">
+
+    <div class="scrim-overlay">
+      <h3>Schedule Competitive Scrims</h3>
+
+      <p>
+        Looking to challenge BLC? Submit a scrim request below and our staff
+        team will review your request.
+      </p>
+    </div>
+
+  </section>
+
+  <section class="scrim-grid">
+
+    <div class="scrim-info-card">
+
+      <h3>Scrim Information</h3>
+
+      <ul>
+        <li>Mode: Competitive</li>
+        <li>5v5 Team Format</li>
+        <li>Organized Match Scheduling</li>
+        <li>Discord Communication Required</li>
+        <li>Respectful Competitive Environment</li>
+      </ul>
+
+    </div>
+
+    <div class="scrim-form-card">
+
+      <h3>Request a Scrim</h3>
+
+      <form id="scrimForm">
+
+        <label for="teamname">Team Name</label>
+        <input type="text" id="teamname" required>
+
+        <label for="captain">Team Captain</label>
+        <input type="text" id="captain" required>
+
+        <label for="discord">Discord Username</label>
+        <input type="text" id="discord" required>
+
+        <label for="rank">Competitive Rank</label>
+        <input type="text" id="rank">
+
+        <label for="date">Preferred Scrim Date</label>
+        <input type="text" id="date" placeholder="Example: Friday 8 PM EST">
+
+        <label for="notes">Additional Notes</label>
+        <textarea id="notes"></textarea>
+
+        <input type="submit" value="Submit Scrim Request">
+
+      </form>
+
+      <p id="scrimMessage"></p>
+
+    </div>
+
+  </section>
+
+</div>
+
+<footer>
+  <p>&copy; 2026 BLC Team Website</p>
+</footer>
+
+<script>
+
+const webhookURL = "https://canary.discord.com/api/webhooks/1507493078292893786/K-9_TRDBU1E1laY2GeFx4QplszyeuQg86oeTXDx7eZwoBNOuEcuBD5L26Bs8dFY5DzPj";
+
+document.getElementById("scrimForm").addEventListener("submit", function(event) {
+
+  event.preventDefault();
+
+  const teamname = document.getElementById("teamname").value;
+  const captain = document.getElementById("captain").value;
+  const discord = document.getElementById("discord").value;
+  const rank = document.getElementById("rank").value;
+  const date = document.getElementById("date").value;
+  const notes = document.getElementById("notes").value;
+
+  const message = {
+    content:
+      "**New Scrim Request**\n\n" +
+      "**Team Name:** " + teamname + "\n" +
+      "**Captain:** " + captain + "\n" +
+      "**Discord:** " + discord + "\n" +
+      "**Rank:** " + rank + "\n" +
+      "**Preferred Date:** " + date + "\n" +
+      "**Mode:** Competitive\n" +
+      "**Notes:** " + notes
+  };
+
+  fetch(webhookURL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(message)
+  })
+
+  .then(response => {
+
+    if(response.ok) {
+
+      document.getElementById("scrimMessage").textContent =
+      "Scrim request submitted successfully.";
+
+      document.getElementById("scrimForm").reset();
+
+    } else {
+
+      document.getElementById("scrimMessage").textContent =
+      "Error submitting scrim request.";
+
+    }
+
+  });
+
+});
+
+</script>
+
+</body>
+</html>
