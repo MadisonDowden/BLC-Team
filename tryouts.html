@@ -1,17 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <title>BLC Team Website :: Tryouts</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <link rel="stylesheet" href="styles.css?v=2">
+  <link rel="stylesheet" href="styles.css?v=2">
 </head>
 
 <body>
 
 <header class="site-header">
-
   <div class="brand">
     <a href="index.html">
       <img src="logo.webp" alt="BLC Logo">
@@ -27,81 +25,73 @@
       <li><a href="tryouts.html" class="active">Tryouts</a></li>
     </ul>
   </nav>
-
 </header>
 
 <div id="wrapper">
 
+  <section class="page-title">
+    <h2>Team <span>Tryouts</span></h2>
+    <p>Apply to Join BLC</p>
+  </section>
+
   <section class="tryout-hero">
-
     <div class="tryout-overlay">
-
       <h3>Join BLC</h3>
 
       <p>
-        Interested in joining Big Little Company?
-        Submit an application below for either the Breachers roster
-        or the VAIL roster.
+        Interested in joining Big Little Company? Submit an application below
+        for either the Breachers roster or the VAIL roster.
       </p>
-
     </div>
-
   </section>
 
   <section class="tryout-grid">
 
     <div class="requirement-card">
-
       <h3>Requirements</h3>
 
       <ul>
-        <li>Be based in North America (exceptions may be made)</li>
+        <li>Be based in North America, with exceptions possible</li>
         <li>No one under 16 years of age</li>
         <li>Follow the IGL or team as a collective</li>
-        <li>Try your best to be respectful towards others</li>
-        <li>Do not have or develop a huge ego</li>
+        <li>Be respectful toward teammates and opponents</li>
+        <li>Do not bring or develop a huge ego</li>
         <li>Focus on improving and having fun with the team</li>
       </ul>
-
     </div>
 
     <div class="form-card">
-
       <h3>Tryout Application</h3>
 
       <form id="tryoutForm">
 
         <label for="gamertag">Gamertag</label>
-        <input type="text" id="gamertag" required>
+        <input type="text" id="gamertag" name="gamertag" required>
 
         <label for="discord">Discord Username</label>
-        <input type="text" id="discord" required>
+        <input type="text" id="discord" name="discord" required>
 
         <label for="game">Game Tryout</label>
-
-        <select id="game" required>
-
+        <select id="game" name="game" required>
           <option value="">Choose a game</option>
           <option value="Breachers">Breachers</option>
           <option value="VAIL">VAIL</option>
-
         </select>
 
         <label for="role">Preferred Role</label>
-        <input type="text" id="role" required>
+        <input type="text" id="role" name="role" required>
 
         <label for="availability">Availability</label>
-        <input type="text" id="availability" required>
+        <input type="text" id="availability" name="availability" required>
 
         <label for="message">Why do you want to join?</label>
-        <textarea id="message" required></textarea>
+        <textarea id="message" name="message" required></textarea>
 
         <input type="submit" value="Submit Application">
 
       </form>
 
       <p id="submissionMessage"></p>
-
     </div>
 
   </section>
@@ -109,14 +99,16 @@
 </div>
 
 <footer>
-  Copyright © 2026 Big Little Company | BLC
+  <p>&copy; 2026 Big Little Company | BLC</p>
 </footer>
 
 <script>
 const form = document.getElementById("tryoutForm");
 
-form.addEventListener("submit", async function(e) {
-  e.preventDefault();
+form.addEventListener("submit", async function(event) {
+  event.preventDefault();
+
+  const webhookURL = "https://canary.discord.com/api/webhooks/1507491236179873813/oO_yCCqPvyCf83J8Ax2LxR-z0jvDIOUvbKZj8lq4mttjRS3RDKl6g-EoEZOJA3qJvgE-";
 
   const gamertag = document.getElementById("gamertag").value;
   const discord = document.getElementById("discord").value;
@@ -124,8 +116,6 @@ form.addEventListener("submit", async function(e) {
   const role = document.getElementById("role").value;
   const availability = document.getElementById("availability").value;
   const message = document.getElementById("message").value;
-
-  const webhookURL = "https://canary.discord.com/api/webhooks/1507491236179873813/oO_yCCqPvyCf83J8Ax2LxR-z0jvDIOUvbKZj8lq4mttjRS3RDKl6g-EoEZOJA3qJvgE-";
 
   let mention = "";
 
@@ -148,7 +138,7 @@ form.addEventListener("submit", async function(e) {
   };
 
   try {
-    await fetch(webhookURL, {
+    const response = await fetch(webhookURL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -156,13 +146,19 @@ form.addEventListener("submit", async function(e) {
       body: JSON.stringify(discordMessage)
     });
 
-    document.getElementById("submissionMessage").innerHTML =
-      "Application submitted successfully!";
+    if (response.ok) {
+      document.getElementById("submissionMessage").textContent =
+        "Application submitted successfully!";
 
-    form.reset();
+      form.reset();
+    } else {
+      document.getElementById("submissionMessage").textContent =
+        "There was an error submitting the application.";
+    }
+
   } catch(error) {
-    document.getElementById("submissionMessage").innerHTML =
-      "There was an error submitting the application.";
+    document.getElementById("submissionMessage").textContent =
+      "Could not connect to Discord.";
   }
 });
 </script>
