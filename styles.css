@@ -1561,4 +1561,101 @@ body {
     width: 100%;
     font-size: 16px;
   }
+}/* FINAL PHONE FIX - MUST BE LAST */
+
+@media screen and (max-width: 900px) {
+
+  /* ROSTER PHONE LIGHTING */
+
+  .fifa-card {
+    background:
+      linear-gradient(135deg, rgba(150, 15, 130, 0.72), rgba(30, 55, 165, 0.72)) !important;
+    box-shadow:
+      0 0 8px rgba(255, 31, 191, 0.25),
+      0 0 14px rgba(47, 91, 255, 0.22) !important;
+    filter: brightness(0.82) saturate(0.9) !important;
+  }
+
+  .fifa-card img {
+    filter:
+      brightness(0.75)
+      saturate(0.85)
+      drop-shadow(0 0 10px #020713) !important;
+  }
+
+  .card-bottom {
+    background: rgba(2, 7, 19, 0.96) !important;
+  }
+
+  .page-title h2 {
+    text-shadow:
+      0 0 8px #2f5bff,
+      0 0 12px #ff1fbf !important;
+  }
+
+  /* TRYOUTS MATCH SCRIMS MOBILE LOOK */
+
+  .tryout-hero,
+  .scrim-hero {
+    min-height: 270px !important;
+    border-radius: 24px !important;
+    margin-bottom: 30px !important;
+    padding: 24px !important;
+    background:
+      linear-gradient(rgba(3, 8, 22, 0.7), rgba(3, 8, 22, 0.94)),
+      radial-gradient(circle at center, rgba(255, 31, 191, 0.22), transparent 30%),
+      linear-gradient(135deg, rgba(255, 31, 191, 0.13), rgba(47, 91, 255, 0.15)) !important;
+  }
+
+  .tryout-overlay,
+  .scrim-overlay {
+    text-align: center !important;
+    padding: 20px !important;
+  }
+
+  .tryout-overlay h3,
+  .scrim-overlay h3 {
+    font-size: 2.5em !important;
+    line-height: 1.05 !important;
+  }
+
+  .tryout-overlay p,
+  .scrim-overlay p {
+    font-size: 1em !important;
+    line-height: 1.7 !important;
+  }
+
+  .tryout-grid,
+  .scrim-grid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+  }
+
+  .requirement-card,
+  .form-card,
+  .scrim-info-card,
+  .scrim-form-card {
+    border-radius: 22px !important;
+    padding: 24px !important;
+    background: rgba(255, 255, 255, 0.055) !important;
+    border: 1px solid rgba(232, 183, 255, 0.22) !important;
+    box-shadow: 0 0 18px rgba(0, 0, 0, 0.32) !important;
+  }
+
+  .requirement-card h3,
+  .form-card h3,
+  .scrim-info-card h3,
+  .scrim-form-card h3 {
+    font-size: 1.45em !important;
+  }
+
+  .form-card input[type="text"],
+  .form-card select,
+  .form-card textarea,
+  .scrim-form-card input[type="text"],
+  .scrim-form-card textarea {
+    width: 100% !important;
+    font-size: 16px !important;
+  }
 }
