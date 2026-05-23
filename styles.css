@@ -1315,4 +1315,154 @@ body {
   .home-cards {
     grid-template-columns: 1fr;
   }
+}/* ========================= */
+/* MOBILE FINAL POLISH */
+/* ========================= */
+
+@media (max-width: 768px) {
+
+  /* HEADER */
+
+  .site-header {
+    padding: 18px 0;
+  }
+
+  .brand img {
+    width: 140px;
+  }
+
+  nav ul {
+    gap: 18px;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 0;
+  }
+
+  nav a {
+    font-size: 0.9em;
+    letter-spacing: 0.08em;
+  }
+
+  /* HERO */
+
+  .home-hero {
+    min-height: auto;
+    padding: 30px 22px;
+    border-radius: 24px;
+  }
+
+  .home-hero h1 {
+    font-size: 3.2em;
+    line-height: 0.92;
+  }
+
+  .home-hero h2 {
+    font-size: 1.5em;
+  }
+
+  .home-hero p {
+    font-size: 1em;
+    line-height: 1.7;
+  }
+
+  .hero-buttons {
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .button {
+    width: 100%;
+    text-align: center;
+  }
+
+  /* PAGE TITLES */
+
+  .page-title h2,
+  .roster-title h2,
+  .scrim-title h2,
+  .tryout-overlay h3 {
+    font-size: 2.8em;
+    line-height: 1;
+  }
+
+  .page-title p,
+  .roster-title p,
+  .scrim-title p {
+    font-size: 0.9em;
+    letter-spacing: 0.25em;
+  }
+
+  /* MATCH SECTION */
+
+  .battle-arena {
+    flex-direction: column;
+    gap: 28px;
+    padding: 35px 20px;
+  }
+
+  .team-side img {
+    width: 110px;
+  }
+
+  .collision-center span {
+    font-size: 3em;
+  }
+
+  /* INFO CARDS */
+
+  .home-cards {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .info-card {
+    padding: 24px;
+  }
+
+  /* ROSTER */
+
+  .roster-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+  }
+
+  .player-card {
+    transform: scale(0.88);
+  }
+
+  /* SCRIMS + TRYOUTS */
+
+  .scrim-grid,
+  .tryout-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .form-card,
+  .requirement-card {
+    padding: 24px;
+  }
+
+  /* FORMS */
+
+  input,
+  textarea,
+  select {
+    font-size: 16px;
+  }
+
+  /* FOOTER */
+
+  footer {
+    padding: 22px 10px;
+    font-size: 0.85em;
+  }
+
+  /* BACKGROUND EFFECTS */
+
+  .galaxy-overlay,
+  .grid-overlay {
+    opacity: 0.45;
+  }
+
 }
