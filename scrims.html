@@ -3,7 +3,6 @@
 <head>
   <title>BLC Team Website :: Scrims</title>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="styles.css?v=2">
 </head>
 
@@ -48,7 +47,6 @@
 
     <div class="scrim-info-card">
       <h3>Scrim Information</h3>
-
       <ul>
         <li>Competitive team environment</li>
         <li>5v5 format</li>
@@ -97,7 +95,7 @@
 </footer>
 
 <script>
-const webhookURL = "https://canary.discord.com/api/webhooks/1507493078292893786/K-9_TRDBU1E1laY2GeFx4QplszyeuQg86oeTXDx7eZwoBNOuEcuBD5L26Bs8dFY5DzPj";
+const webhookURL = "YOUR_SCRIM_WEBHOOK_HERE";
 
 document.getElementById("scrimForm").addEventListener("submit", function(event) {
   event.preventDefault();
@@ -132,7 +130,6 @@ document.getElementById("scrimForm").addEventListener("submit", function(event) 
     if (response.ok) {
       document.getElementById("scrimMessage").textContent =
         "Scrim request submitted successfully.";
-
       document.getElementById("scrimForm").reset();
     } else {
       document.getElementById("scrimMessage").textContent =
