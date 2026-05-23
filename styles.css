@@ -1465,4 +1465,100 @@ body {
     opacity: 0.45;
   }
 
+}/* MOBILE ROSTER LIGHTING + TRYOUT/SCRIM MATCH FIX */
+
+@media (max-width: 768px) {
+
+  /* ROSTER: reduce brightness/glow on phones */
+
+  .fifa-card {
+    background:
+      linear-gradient(135deg, rgba(180, 20, 150, 0.82), rgba(35, 65, 190, 0.82)),
+      linear-gradient(180deg, #111a44, #050916);
+    box-shadow:
+      0 0 14px rgba(255, 31, 191, 0.35),
+      0 0 22px rgba(47, 91, 255, 0.28);
+  }
+
+  .fifa-card:hover {
+    box-shadow:
+      0 0 18px rgba(255, 31, 191, 0.45),
+      0 0 28px rgba(47, 91, 255, 0.35);
+  }
+
+  .fifa-card img {
+    filter:
+      brightness(0.82)
+      drop-shadow(0 0 16px #020713);
+  }
+
+  .page-title h2 {
+    text-shadow:
+      0 0 10px #2f5bff,
+      0 0 18px #ff1fbf;
+  }
+
+  /* MAKE TRYOUT PAGE MATCH SCRIMS MOBILE LAYOUT */
+
+  .tryout-hero {
+    min-height: 270px;
+    border-radius: 24px;
+    margin-bottom: 30px;
+    padding: 24px;
+  }
+
+  .tryout-overlay {
+    text-align: center;
+    padding: 20px;
+  }
+
+  .tryout-overlay h3 {
+    font-size: 2.5em;
+    line-height: 1.05;
+  }
+
+  .tryout-overlay p {
+    font-size: 1em;
+    line-height: 1.7;
+  }
+
+  .tryout-grid,
+  .scrim-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .requirement-card,
+  .form-card,
+  .scrim-info-card,
+  .scrim-form-card {
+    border-radius: 22px;
+    padding: 24px;
+    background: rgba(255, 255, 255, 0.055);
+    border: 1px solid rgba(232, 183, 255, 0.22);
+    box-shadow: 0 0 18px rgba(0, 0, 0, 0.32);
+  }
+
+  .requirement-card h3,
+  .form-card h3,
+  .scrim-info-card h3,
+  .scrim-form-card h3 {
+    font-size: 1.45em;
+  }
+
+  .form-card form,
+  .scrim-form-card form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .form-card input[type="text"],
+  .form-card select,
+  .form-card textarea,
+  .scrim-form-card input[type="text"],
+  .scrim-form-card textarea {
+    width: 100%;
+    font-size: 16px;
+  }
 }
