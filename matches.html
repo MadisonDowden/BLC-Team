@@ -3,135 +3,99 @@
 <head>
   <title>BLC Team Website :: Matches</title>
   <meta charset="utf-8">
-  <link rel="stylesheet" href="styles.css?v=2">
+  <link rel="stylesheet" href="styles.css?v=3">
 </head>
-<script>
-function updateCountdowns() {
-  const countdowns = document.querySelectorAll(".countdown");
 
-  countdowns.forEach(function(countdown) {
-    const startTime = new Date(countdown.dataset.start).getTime();
-    const now = new Date().getTime();
-    const distance = startTime - now;
-
-    if (distance <= 0) {
-      countdown.textContent = "LIVE NOW";
-      countdown.classList.add("live");
-      return;
-    }
-
-    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
-    const minutes = Math.floor((distance / (1000 * 60)) % 60);
-    const seconds = Math.floor((distance / 1000) % 60);
-
-    countdown.textContent = days + "d " + hours + "h " + minutes + "m " + seconds + "s";
-  });
-}
-
-updateCountdowns();
-setInterval(updateCountdowns, 1000);
-</script>
 <body>
 
 <header class="site-header">
-
   <div class="brand">
-    <img src="logo.webp" alt="BLC Logo">
+    <a href="index.html"><img src="logo.webp" alt="BLC Logo"></a>
   </div>
 
   <nav>
     <ul>
-      <li><a href="index.html">Home</a></li>
-      <li><a href="matches.html" class="active">Matches</a></li>
-      <li><a href="roster.html">Roster</a></li>
-      <li><a href="scrims.html">Scrims</a></li>
-      <li><a href="tryouts.html">Tryouts</a></li>
+      <li><a href="index.html">HOME</a></li>
+      <li><a href="matches.html" class="active">MATCHES</a></li>
+      <li><a href="roster.html">ROSTER</a></li>
+      <li><a href="scrims.html">SCRIMS</a></li>
+      <li><a href="tryouts.html">TRYOUTS</a></li>
     </ul>
   </nav>
-
 </header>
 
-<div id="wrapper">
+<main class="matches-page">
 
-  <section class="page-title">
-    <h2>Upcoming <span>Matches</span></h2>
-    <p>BLC Competitive Schedule</p>
+  <img src="images/blc-player.png" class="match-player left-match-player" alt="BLC Player">
+
+  <img src="images/estf-player.png" class="match-player right-match-player" alt="ESTF Player">
+
+  <section class="center-content">
+    <h1><span>BLC</span><br>VS</h1>
+    <p class="scrim-title">RAZE</p>
+
+    <div class="live-card">
+      <p class="next">NEXT SCRIM</p>
+
+      <div class="teams">
+        <span id="teamOne">BLC</span>
+        <span>VS</span>
+        <span id="teamTwo">RAZE</span>
+      </div>
+
+      <p id="matchDate" class="match-date">May 25, 2026 • 8:00 PM EST</p>
+
+      <p class="starts">SCRIMS START IN</p>
+
+      <div class="countdown">
+        <div><span id="days">00</span><small>DAYS</small></div>
+        <div><span id="hours">00</span><small>HOURS</small></div>
+        <div><span id="minutes">00</span><small>MINUTES</small></div>
+        <div><span id="seconds">00</span><small>SECONDS</small></div>
+      </div>
+    </div>
   </section>
 
-  <section class="battle-arena">
+</main>
 
-    <div class="team-side team-left">
+<script>
+const matchInfo = {
+  teamOne: "BLC",
+  teamTwo: "RAZE",
+  displayDate: "May 25, 2026 • 8:00 PM EST",
+  startTime: "2026-05-25T20:00:00"
+};
 
-      <img src="logo.webp" alt="BLC Logo">
+document.getElementById("teamOne").textContent = matchInfo.teamOne;
+document.getElementById("teamTwo").textContent = matchInfo.teamTwo;
+document.getElementById("matchDate").textContent = matchInfo.displayDate;
 
-      <h3>BLC</h3>
+function updateCountdown() {
+  const targetTime = new Date(matchInfo.startTime).getTime();
+  const now = new Date().getTime();
+  const distance = targetTime - now;
 
-      <p>BIG LITTLE COMPANY</p>
+  if (distance <= 0) {
+    document.querySelector(".countdown").innerHTML = "<h2>LIVE NOW</h2>";
+    return;
+  }
 
-    </div>
+  document.getElementById("days").textContent =
+    Math.floor(distance / (1000 * 60 * 60 * 24));
 
-    <div class="collision-center">
+  document.getElementById("hours").textContent =
+    Math.floor((distance / (1000 * 60 * 60)) % 24);
 
-      <span>VS</span>
+  document.getElementById("minutes").textContent =
+    Math.floor((distance / (1000 * 60)) % 60);
 
-      <p>COMPETITIVE MATCH</p>
+  document.getElementById("seconds").textContent =
+    Math.floor((distance / 1000) % 60);
+}
 
-    </div>
-
-    <div class="team-side team-right">
-
-  <img src="" alt="Legacy">
-
-  <h3>Legacy</h3>
-
-  <p>Legacy</p>
-
-</div>
-
-  </section>
-
-  <section class="home-cards">
-
-    <div class="info-card">
-
-      <h3>Next Match</h3>
-
-      <p>
-        Saturday - 9:00 PM EST
-      </p>
-
-    </div>
-
-    <div class="info-card">
-
-      <h3>Game Mode</h3>
-
-      <p>
-        Scrim
-      </p>
-
-    </div>
-
-    <div class="info-card">
-
-      <h3><p class="match-status">
-  Status: <span class="countdown" data-start="2026-05-23T20:00:00">Loading...</span>
-</p></h3>
-
-      <p>
-        Starting Soon
-      </p>
-
-    </div>
-
-  </section>
-
-</div>
-
-<footer>
-  <p>&copy; 2026 BLC Team Website</p>
-</footer>
+updateCountdown();
+setInterval(updateCountdown, 1000);
+</script>
 
 </body>
 </html>
