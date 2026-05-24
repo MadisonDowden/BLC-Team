@@ -22,15 +22,9 @@ client.once("ready", () => {
 });
 
 function getField(content, label) {
-  const lines = content.split("\n");
-
-  for (const line of lines) {
-    if (line.toLowerCase().startsWith(label.toLowerCase() + ":")) {
-      return line.split(":").slice(1).join(":").trim();
-    }
-  }
-
-  return "Not listed";
+  const regex = new RegExp(`${label}:\\s*(.*)`, "im");
+  const match = content.match(regex);
+  return match ? match[1].trim() : "Not listed";
 }
 
 function formatDisplayDate(dateString) {
@@ -128,15 +122,8 @@ client.on("messageCreate", async (message) => {
         return;
       }
 
-      const teamName = getField(
-        scrimRequest.content,
-        "Team Name"
-      );
-
-      const preferredDate = getField(
-        scrimRequest.content,
-        "Preferred Date"
-      );
+      const teamName = getField(scrimRequest.content, "Team Name");
+      const preferredDate = getField(scrimRequest.content, "Preferred Date");
 
       const githubFile = await getGitHubMatchesFile();
       const matches = githubFile.matches;
@@ -149,10 +136,7 @@ client.on("messageCreate", async (message) => {
         status: "Approved"
       });
 
-      await updateGitHubMatchesFile(
-        matches,
-        githubFile.sha
-      );
+      await updateGitHubMatchesFile(matches, githubFile.sha);
 
       await message.reply(
         `✅ Scrim approved for ${teamName} and pushed live to matches page.`
