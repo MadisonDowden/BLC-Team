@@ -53,7 +53,8 @@ async function getGitHubMatchesFile() {
   });
 
   if (!response.ok) {
-    throw new Error(`GitHub read failed: ${response.status}`);
+    const errorText = await response.text();
+    throw new Error(`GitHub read failed: ${response.status} ${errorText}`);
   }
 
   const data = await response.json();
@@ -84,16 +85,14 @@ async function updateGitHubMatchesFile(matches, sha) {
     body: JSON.stringify({
       message: "Update approved scrim match",
       content: updatedContent,
-      sha,
-      branch
+      sha: sha,
+      branch: branch
     })
   });
 
   if (!response.ok) {
     const errorText = await response.text();
-    throw new Error(
-      `GitHub update failed: ${response.status} ${errorText}`
-    );
+    throw new Error(`GitHub update failed: ${response.status} ${errorText}`);
   }
 }
 
@@ -143,10 +142,12 @@ client.on("messageCreate", async (message) => {
       );
 
     } catch (error) {
-      console.error(error);
+      console.error("FULL ERROR:", error);
 
       await message.reply(
-        "❌ Failed to update GitHub:\n```" + error.message + "```"
+        "❌ GitHub update failed:\n```" +
+        error.message +
+        "```"
       );
     }
   }
