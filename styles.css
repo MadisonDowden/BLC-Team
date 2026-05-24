@@ -494,7 +494,10 @@ footer {
   }
   100% { transform: scale(1); }
 }
-/* ROSTER FIFA CARDS */
+
+/* =========================
+   FINAL ROSTER CARDS
+========================= */
 
 .roster-second-title {
   margin-top: 90px;
@@ -511,7 +514,7 @@ footer {
   width: 285px;
   height: 430px;
   position: relative;
-  overflow: visible;
+  overflow: hidden;
   transition: 0.35s ease;
   animation: cardPulse 3s ease-in-out infinite alternate;
 }
@@ -520,6 +523,7 @@ footer {
   content: "";
   position: absolute;
   inset: 0;
+
   clip-path: polygon(
     9% 0%,
     91% 0%,
@@ -530,25 +534,39 @@ footer {
     0% 91%,
     0% 9%
   );
+
   background:
-    linear-gradient(135deg, rgba(255, 31, 191, 0.95), rgba(47, 91, 255, 0.95)),
-    linear-gradient(180deg, #111a44, #050916);
+    linear-gradient(rgba(10, 0, 25, 0.35), rgba(10, 0, 25, 0.35)),
+    url("images/lightning.gif");
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  border: 2px solid #d42fff;
+
   box-shadow:
-    0 0 25px rgba(255, 31, 191, 0.8),
-    0 0 45px rgba(47, 91, 255, 0.65);
+    0 0 18px #ff1fbf,
+    0 0 35px rgba(120, 40, 255, 0.85),
+    0 0 55px rgba(0, 170, 255, 0.35);
+
   z-index: 1;
 }
 
 .fifa-card::after {
   content: "BLC";
   position: absolute;
-  top: 110px;
+  top: 115px;
   left: 50%;
   transform: translateX(-50%);
   font-size: 5em;
   font-weight: bold;
-  color: rgba(255, 255, 255, 0.07);
+  color: rgba(255, 255, 255, 0.06);
   z-index: 2;
+}
+
+.open-card::after {
+  content: "OPEN";
 }
 
 .fifa-card:hover {
@@ -565,18 +583,14 @@ footer {
   object-fit: contain;
   z-index: 10;
   transition: 0.35s ease;
+
   filter:
     drop-shadow(0 0 18px #2f5bff)
     drop-shadow(0 0 28px rgba(255, 31, 191, 0.55));
 }
 
 .fifa-card:hover .player-img {
-  transform:
-    translateX(-50%)
-    translateY(-12px)
-    scale(1.1)
-    rotateY(8deg)
-    rotateX(4deg);
+  transform: translateX(-50%) translateY(-12px) scale(1.1);
 }
 
 .gloomymel-img {
@@ -591,20 +605,21 @@ footer {
   left: 52%;
   top: -350px;
   width: 360px;
-  height: 1100px;
+  height: 1150px;
   z-index: 50;
 }
+
 .brax-img {
   top: -290px;
   width: 280px;
-  height: 900px;
+  height: 960px;
   z-index: 50;
 }
 
 .hunter-img {
   top: -290px;
   width: 290px;
-  height: 900px;
+  height: 960px;
   z-index: 50;
 }
 
@@ -614,10 +629,25 @@ footer {
   right: 18px;
   bottom: 22px;
   z-index: 60;
-  background: rgba(2, 7, 19, 0.95);
+
+  background: rgba(2, 7, 19, 0.96);
+
   padding: 12px 10px 10px;
   text-align: center;
-  clip-path: polygon(8% 0%, 92% 0%, 100% 25%, 100% 100%, 0% 100%, 0% 25%);
+
+  clip-path: polygon(
+    8% 0%,
+    92% 0%,
+    100% 25%,
+    100% 100%,
+    0% 100%,
+    0% 25%
+  );
+
+  border: 1px solid rgba(255, 31, 191, 0.55);
+
+  box-shadow:
+    0 0 18px rgba(255, 31, 191, 0.45);
 }
 
 .card-bottom h3 {
@@ -626,7 +656,6 @@ footer {
   font-size: 1.35em;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  text-shadow: 0 0 10px #000000;
 }
 
 .card-bottom p {
@@ -642,10 +671,6 @@ footer {
   color: #ff1fbf;
 }
 
-.open-card::after {
-  content: "OPEN";
-}
-
 @keyframes cardPulse {
   from {
     box-shadow:
@@ -659,6 +684,7 @@ footer {
       0 0 70px rgba(47, 91, 255, 0.7);
   }
 }
+
 /* SCRIMS PAGE FIX */
 
 .scrim-hero {
