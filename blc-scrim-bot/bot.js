@@ -15,7 +15,7 @@ const repo = process.env.GITHUB_REPO;
 const branch = process.env.GITHUB_BRANCH || "main";
 const filePath = "matches.json";
 
-client.once("clientReady", () => {
+client.once("ready", () => {
   console.log(`BLC Scrim Bot is online as ${client.user.tag}`);
 });
 
