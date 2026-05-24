@@ -18,7 +18,8 @@ const branch = process.env.GITHUB_BRANCH || "main";
 const filePath = "matches.json";
 
 client.once("ready", () => {
-  console.log(`BLC Scrim Bot is online as ${client.user.tag}`);
+  console.log("NEW BOT VERSION LOADED");
+console.log(`BLC Scrim Bot is online as ${client.user.tag}`);
 });
 
 function getField(content, label) {
