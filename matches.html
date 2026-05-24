@@ -59,16 +59,33 @@
 </main>
 
 <script>
-const matchInfo = {
+let matchInfo = {
   teamOne: "BLC",
   teamTwo: "RAZE",
   displayDate: "May 25, 2026 • 8:00 PM EST",
   startTime: "2026-05-25T20:00:00"
 };
 
-document.getElementById("teamOne").textContent = matchInfo.teamOne;
-document.getElementById("teamTwo").textContent = matchInfo.teamTwo;
-document.getElementById("matchDate").textContent = matchInfo.displayDate;
+fetch("matches.json")
+  .then(response => response.json())
+  .then(matches => {
+    if (matches.length > 0) {
+      const latestMatch = matches[matches.length - 1];
+
+      matchInfo.teamOne = "BLC";
+      matchInfo.teamTwo = latestMatch.team;
+     matchInfo.displayDate = latestMatch.date;
+matchInfo.startTime = latestMatch.startTime;
+
+      document.querySelector(".scrim-title").textContent = latestMatch.team;
+      document.getElementById("teamOne").textContent = matchInfo.teamOne;
+      document.getElementById("teamTwo").textContent = matchInfo.teamTwo;
+      document.getElementById("matchDate").textContent = matchInfo.displayDate;
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  });
 
 function updateCountdown() {
   const targetTime = new Date(matchInfo.startTime).getTime();
@@ -92,10 +109,4 @@ function updateCountdown() {
   document.getElementById("seconds").textContent =
     Math.floor((distance / 1000) % 60);
 }
-
-updateCountdown();
-setInterval(updateCountdown, 1000);
 </script>
-
-</body>
-</html>

@@ -73,8 +73,8 @@
         <label for="rank">Competitive Rank</label>
         <input type="text" id="rank" name="rank">
 
-        <label for="date">Preferred Scrim Date</label>
-        <input type="text" id="date" name="date" placeholder="Example: Friday 8 PM EST">
+       <label for="date">Preferred Scrim Date</label>
+<input type="datetime-local" id="date" name="date" required>
 
         <label for="notes">Additional Notes</label>
         <textarea id="notes" name="notes"></textarea>
@@ -95,7 +95,7 @@
 </footer>
 
 <script>
-const webhookURL = "YOUR_SCRIM_WEBHOOK_HERE";
+const webhookURL = "https://canary.discord.com/api/webhooks/1507493078292893786/K-9_TRDBU1E1laY2GeFx4QplszyeuQg86oeTXDx7eZwoBNOuEcuBD5L26Bs8dFY5DzPj";
 
 document.getElementById("scrimForm").addEventListener("submit", function(event) {
   event.preventDefault();
@@ -107,39 +107,43 @@ document.getElementById("scrimForm").addEventListener("submit", function(event) 
   const date = document.getElementById("date").value || "Not listed";
   const notes = document.getElementById("notes").value || "None";
 
-  const message = {
-    content:
-      "**New Scrim Request**\n\n" +
-      "**Team Name:** " + teamname + "\n" +
-      "**Captain:** " + captain + "\n" +
-      "**Discord:** " + discord + "\n" +
-      "**Rank:** " + rank + "\n" +
-      "**Preferred Date:** " + date + "\n" +
-      "**Mode:** Competitive\n" +
-      "**Notes:** " + notes
-  };
 
-  fetch(webhookURL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(message)
-  })
-  .then(function(response) {
-    if (response.ok) {
-      document.getElementById("scrimMessage").textContent =
-        "Scrim request submitted successfully.";
-      document.getElementById("scrimForm").reset();
-    } else {
-      document.getElementById("scrimMessage").textContent =
-        "Error submitting scrim request.";
-    }
-  })
-  .catch(function() {
+const message = {
+  content:
+    "<@1502149256792899684>\n\n" +
+    "**New Scrim Request**\n\n" +
+    "**Team Name:** " + teamname + "\n" +
+    "**Captain:** " + captain + "\n" +
+    "**Discord:** " + discord + "\n" +
+    "**Rank:** " + rank + "\n" +
+    "**Preferred Date:** " + date + "\n" +
+    "**Mode:** Competitive\n" +
+    "**Notes:** " + notes + "\n\n" +
+    "━━━━━━━━━━━━━━━━━━\n" +
+    "**Decision:** Reply with **YES** to accept or **NO** to deny."
+};
+
+fetch(webhookURL, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify(message)
+})
+.then(function(response) {
+  if (response.ok) {
     document.getElementById("scrimMessage").textContent =
-      "Could not connect to Discord.";
-  });
+      "Scrim request submitted successfully.";
+    document.getElementById("scrimForm").reset();
+  } else {
+    document.getElementById("scrimMessage").textContent =
+      "Error submitting scrim request.";
+  }
+})
+.catch(function() {
+  document.getElementById("scrimMessage").textContent =
+    "Could not connect to Discord.";
+});
 });
 </script>
 

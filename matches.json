@@ -1,0 +1,39 @@
+[
+  {
+    "team": "Approved Scrim",
+    "date": "Date from Discord request",
+    "mode": "Competitive",
+    "status": "Approved"
+  },
+  {
+    "team": "BLC",
+    "date": "anytime",
+    "mode": "Competitive",
+    "status": "Approved"
+  },
+  {
+    "team": "BLC",
+    "date": "Sunday may 24 2026 8pm est",
+    "mode": "Competitive",
+    "status": "Approved"
+  },
+  {
+    "team": "BLC",
+    "date": "2026-05-24T21:00",
+    "mode": "Competitive",
+    "status": "Approved"
+  },
+  {
+    "team": "BLC",
+    "date": "2026-05-24T21:00",
+    "mode": "Competitive",
+    "status": "Approved"
+  },
+  {
+    "team": "BLC",
+    "date": "2026-05-24T21:00",
+    "startTime": "2026-05-24T21:00:00",
+    "mode": "Competitive",
+    "status": "Approved"
+  }
+]
