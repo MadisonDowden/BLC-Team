@@ -142,4 +142,7 @@ client.on("messageCreate", async (message) => {
   }
 });
 
+console.log("DISCORD_TOKEN exists:", !!process.env.DISCORD_TOKEN);
+console.log("DISCORD_TOKEN length:", process.env.DISCORD_TOKEN ? process.env.DISCORD_TOKEN.length : 0);
+
 client.login(process.env.DISCORD_TOKEN);
