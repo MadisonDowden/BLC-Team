@@ -144,11 +144,14 @@ client.on("messageCreate", async (message) => {
   }
 });
 
-const token = process.env.DISCORD_TOKEN;
+const token = (process.env.DISCORD_TOKEN || "").trim();
 
-console.log("TOKEN EXISTS:", !!token);
-console.log("TOKEN LENGTH:", token ? token.length : 0);
-console.log("TOKEN START:", token ? token.slice(0, 6) : "none");
-console.log("TOKEN END:", token ? token.slice(-6) : "none");
+console.log("TOKEN EXISTS:", token.length > 0);
+console.log("TOKEN LENGTH:", token.length);
+console.log("TOKEN HAS DOTS:", token.includes("."));
+
+if (!token) {
+  throw new Error("DISCORD_TOKEN is missing from Railway variables.");
+}
 
 client.login(token);
