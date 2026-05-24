@@ -1,4 +1,6 @@
-require("dotenv").config();
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
 
 const { Client, GatewayIntentBits } = require("discord.js");
 
@@ -15,7 +17,7 @@ const repo = process.env.GITHUB_REPO;
 const branch = process.env.GITHUB_BRANCH || "main";
 const filePath = "matches.json";
 
-client.once("ready", () => {
+client.once("clientReady", () => {
   console.log(`BLC Scrim Bot is online as ${client.user.tag}`);
 });
 
