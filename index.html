@@ -1,23 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <title>BLC | Big Little Company</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <link rel="stylesheet" href="styles.css?v=2">
+  <link rel="stylesheet" href="styles.css?v=300">
 </head>
 
 <body>
-
-<!-- VIDEO BACKGROUND -->
 
 <video autoplay muted loop playsinline id="bg-video">
   <source src="background.mp4" type="video/mp4">
 </video>
 
 <header class="site-header">
-
   <div class="brand">
     <a href="index.html">
       <img src="logo.webp" alt="BLC Logo">
@@ -34,77 +30,110 @@
     </ul>
   </nav>
 
+  <a href="tryouts.html" class="discord-button">Join BLC</a>
 </header>
 
-<div id="wrapper">
+<main class="home-page">
 
-  <section class="home-hero">
+  <section class="home-main-hero">
+    <div class="hero-left">
+      <p class="hero-tagline">COMPETITIVE BREACHERS ORGANIZATION</p>
 
-    <div class="home-hero-text">
+      <h1>
+        BIG LITTLE<br>
+        <span>COMPANY</span>
+      </h1>
 
-      <h1>BIG LITTLE<br>COMPANY</h1>
-
-      <h2>Big Plays. Big Team.</h2>
-
-      <p>
-        Big Little Company is a competitive Breachers VR team built around teamwork,
-        smart strategy, and high-pressure execution.
+      <p class="hero-text">
+        Building a community. Competing at the highest level.
+        This is BLC.
       </p>
 
-      <div class="hero-buttons">
+      <div class="hero-actions">
+  <a href="roster.html" class="hero-main-btn">View Roster</a>
 
-        <a href="roster.html" class="button pink">
-          View Roster
-        </a>
+  <a href="tryouts.html" class="hero-outline-btn">Join Tryouts</a>
 
-        <a href="scrims.html" class="button blue">
-          Request Scrim
-        </a>
-
-      </div>
-
-    </div>
-
-  </section>
-
-  <section class="home-cards">
-
-    <div class="info-card">
-
-      <h3>Competitive VRML</h3>
-
-      <p>
-        BLC competes in Breachers with a focus on clean rotations,
-        fast communication, and tactical team play.
-      </p>
-
-    </div>
-
-    <div class="info-card">
-
-      <h3>Active Roster</h3>
-
-      <p>
-        View the official BLC roster, player roles,
-        and team lineup.
-      </p>
-
-    </div>
-
-    <div class="info-card">
-
-      <h3>Scrim Ready</h3>
-
-      <p>
-        Other teams can contact us for scrim matches,
-        practice games, and competitive matchups.
-      </p>
-
-    </div>
-
-  </section>
-
+  <a href="https://discord.gg/YOURINVITECODE" target="_blank" class="hero-discord-icon">
+    <img src="discord-logo.png" alt="Join BLC Discord">
+  </a>
 </div>
+    </div>
+
+    <div class="hero-right">
+      <img src="logo.webp" alt="BLC Logo">
+    </div>
+  </section>
+
+  <section class="home-stats">
+    <div>
+      <h2>3</h2>
+      <p>Competitive Teams</p>
+    </div>
+
+    <div>
+      <h2>25+</h2>
+      <p>Active Players</p>
+    </div>
+
+    <div>
+      <h2>VRML +  BREACHERS</h2>
+      <p>League Competitive</p>
+    </div>
+
+    <div>
+      <h2>24/7</h2>
+      <p>Community Driven</p>
+    </div>
+  </section>
+
+  <section class="home-lower-grid">
+
+    <div class="teams-panel">
+      <h2>Our Teams</h2>
+
+      <div class="team-card-row">
+        <div class="team-card breachers-card">
+          <img src="logo.webp" alt="BLC Logo">
+          <h3>Breachers</h3>
+          <p>VRML Team</p>
+          <a href="roster.html">View Team</a>
+        </div>
+
+        <div class="team-card vail-card">
+          <img src="logo.webp" alt="BLC Logo">
+          <h3>VAIL</h3>
+          <p>VRML Team</p>
+          <a href="roster.html">View Team</a>
+        </div>
+
+        <div class="team-card sister-card">
+          <img src="logo.webp" alt="BLC Logo">
+          <h3>Sister Team</h3>
+          <p>Development Team</p>
+          <a href="roster.html">View Team</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="upcoming-panel">
+      <h2>Upcoming Match</h2>
+
+      <div class="match-box">
+        <p class="match-date">Next Event</p>
+        <h3>BLC <span>VS</span> TBA</h3>
+        <p>VRML Competitive Matchup</p>
+        <a href="matches.html">View Matches</a>
+      </div>
+    </div>
+<div class="discord-logo-link">
+  <a href="https://discord.gg/YOURINVITECODE" target="_blank">
+    <img src="discord-logo.png" alt="Join BLC Discord">
+  </a>
+</div>
+  </section>
+
+</main>
 
 <footer>
   Copyright © 2026 Big Little Company | BLC
