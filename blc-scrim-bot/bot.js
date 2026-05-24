@@ -142,7 +142,11 @@ client.on("messageCreate", async (message) => {
   }
 });
 
-console.log("DISCORD_TOKEN exists:", !!process.env.DISCORD_TOKEN);
-console.log("DISCORD_TOKEN length:", process.env.DISCORD_TOKEN ? process.env.DISCORD_TOKEN.length : 0);
+const token = process.env.DISCORD_TOKEN;
 
-client.login(process.env.DISCORD_TOKEN);
+console.log("TOKEN EXISTS:", !!token);
+console.log("TOKEN LENGTH:", token ? token.length : 0);
+console.log("TOKEN START:", token ? token.slice(0, 6) : "none");
+console.log("TOKEN END:", token ? token.slice(-6) : "none");
+
+client.login(token);
