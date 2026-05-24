@@ -22,9 +22,15 @@ client.once("clientReady", () => {
 });
 
 function getField(content, label) {
-  const regex = new RegExp("\\*\\*" + label + ":\\*\\*\\s*(.+)", "i");
-  const match = content.match(regex);
-  return match ? match[1].trim() : "Not listed";
+  const lines = content.split("\n");
+
+  for (const line of lines) {
+    if (line.toLowerCase().startsWith(label.toLowerCase() + ":")) {
+      return line.split(":").slice(1).join(":").trim();
+    }
+  }
+
+  return "Not listed";
 }
 
 function formatDisplayDate(dateString) {
