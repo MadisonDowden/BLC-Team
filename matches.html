@@ -5,7 +5,33 @@
   <meta charset="utf-8">
   <link rel="stylesheet" href="styles.css?v=2">
 </head>
+<script>
+function updateCountdowns() {
+  const countdowns = document.querySelectorAll(".countdown");
 
+  countdowns.forEach(function(countdown) {
+    const startTime = new Date(countdown.dataset.start).getTime();
+    const now = new Date().getTime();
+    const distance = startTime - now;
+
+    if (distance <= 0) {
+      countdown.textContent = "LIVE NOW";
+      countdown.classList.add("live");
+      return;
+    }
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((distance / (1000 * 60)) % 60);
+    const seconds = Math.floor((distance / 1000) % 60);
+
+    countdown.textContent = days + "d " + hours + "h " + minutes + "m " + seconds + "s";
+  });
+}
+
+updateCountdowns();
+setInterval(updateCountdowns, 1000);
+</script>
 <body>
 
 <header class="site-header">
@@ -89,7 +115,9 @@
 
     <div class="info-card">
 
-      <h3>Status</h3>
+      <h3><p class="match-status">
+  Status: <span class="countdown" data-start="2026-05-23T20:00:00">Loading...</span>
+</p></h3>
 
       <p>
         Starting Soon
