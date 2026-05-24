@@ -1600,3 +1600,12 @@ footer {
 .hero-discord-icon img:hover {
   transform: scale(1.12);
 }
+.sister-card img {
+  width: 190px;
+  height: auto;
+  object-fit: contain;
+
+  filter:
+    drop-shadow(0 0 12px rgba(155,77,255,.55))
+    drop-shadow(0 0 22px rgba(255,31,191,.25));
+}
