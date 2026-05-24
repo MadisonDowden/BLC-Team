@@ -17,7 +17,7 @@ const repo = process.env.GITHUB_REPO;
 const branch = process.env.GITHUB_BRANCH || "main";
 const filePath = "matches.json";
 
-client.once("clientReady", () => {
+client.once("ready", () => {
   console.log(`BLC Scrim Bot is online as ${client.user.tag}`);
 });
 
@@ -105,30 +105,25 @@ async function updateGitHubMatchesFile(matches, sha) {
 
 client.on("messageCreate", async (message) => {
   if (message.author.bot) return;
-
   if (message.author.id !== process.env.APPROVER_ID) return;
 
   const reply = message.content.toLowerCase().trim();
 
   if (reply === "yes") {
     try {
-      const messages = await message.channel.messages.fetch({ limit: 25 });
+      const messages = await message.channel.messages.fetch({
+        limit: 2,
+        before: message.id
+      });
 
-      const scrimRequests = messages
-        .filter(
-          msg =>
-            msg.author.bot &&
-            msg.content.includes("New Scrim Request")
-        )
-        .sort(
-          (a, b) => b.createdTimestamp - a.createdTimestamp
-        );
+      const scrimRequest = messages.first();
 
-      const scrimRequest = scrimRequests.first();
-
-      if (!scrimRequest) {
+      if (
+        !scrimRequest ||
+        !scrimRequest.content.includes("New Scrim Request")
+      ) {
         await message.reply(
-          "Could not find a recent scrim request."
+          "❌ Could not find the scrim request directly above this message."
         );
         return;
       }
@@ -167,7 +162,7 @@ client.on("messageCreate", async (message) => {
       console.error(error);
 
       await message.reply(
-        "❌ Scrim approved but failed to update matches.json."
+        "❌ Failed to update GitHub:\n```" + error.message + "```"
       );
     }
   }
