@@ -1,4 +1,3 @@
-throw new Error("TEST DEPLOY CHECK");
 if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
 }
@@ -31,22 +30,20 @@ function getField(content, label) {
 function formatDisplayDate(dateString) {
   const date = new Date(dateString);
 
-  if (isNaN(date.getTime())) {
-    return dateString;
-  }
+  if (isNaN(date.getTime())) return dateString;
 
   return date.toLocaleString("en-US", {
     month: "long",
     day: "numeric",
     year: "numeric",
     hour: "numeric",
-    minute: "2-digit",
-    timeZoneName: "short"
+    minute: "2-digit"
   });
 }
 
 async function getGitHubMatchesFile() {
-  const url = `https://api.github.com/repos/${owner}/${repo}/contents/${filePath}?ref=${branch}`;
+  const url =
+    `https://api.github.com/repos/${owner}/${repo}/contents/${filePath}?ref=${branch}`;
 
   const response = await fetch(url, {
     headers: {
@@ -60,16 +57,18 @@ async function getGitHubMatchesFile() {
   }
 
   const data = await response.json();
-  const content = Buffer.from(data.content, "base64").toString("utf8");
 
   return {
     sha: data.sha,
-    matches: JSON.parse(content)
+    matches: JSON.parse(
+      Buffer.from(data.content, "base64").toString("utf8")
+    )
   };
 }
 
 async function updateGitHubMatchesFile(matches, sha) {
-  const url = `https://api.github.com/repos/${owner}/${repo}/contents/${filePath}`;
+  const url =
+    `https://api.github.com/repos/${owner}/${repo}/contents/${filePath}`;
 
   const updatedContent = Buffer.from(
     JSON.stringify(matches, null, 2)
@@ -85,41 +84,59 @@ async function updateGitHubMatchesFile(matches, sha) {
     body: JSON.stringify({
       message: "Update approved scrim match",
       content: updatedContent,
-      sha: sha,
-      branch: branch
+      sha,
+      branch
     })
   });
 
   if (!response.ok) {
     const errorText = await response.text();
-    throw new Error(`GitHub update failed: ${response.status} ${errorText}`);
+    throw new Error(
+      `GitHub update failed: ${response.status} ${errorText}`
+    );
   }
 }
 
 client.on("messageCreate", async (message) => {
   if (message.author.bot) return;
 
-  const reply = message.content.toLowerCase().trim();
-
   if (message.author.id !== process.env.APPROVER_ID) return;
 
+  const reply = message.content.toLowerCase().trim();
+
   if (reply === "yes") {
-    const messages = await message.channel.messages.fetch({ limit: 10 });
-
-    const scrimRequest = messages.find(msg =>
-      msg.author.bot &&
-      msg.content.includes("New Scrim Request")
-    );
-
-    if (!scrimRequest) {
-      await message.reply("Could not find the scrim request above this message.");
-      return;
-    }
-
-    const teamName = getField(scrimRequest.content, "Team Name");
-    const preferredDate = getField(scrimRequest.content, "Preferred Date");
-
     try {
+      const messages = await message.channel.messages.fetch({ limit: 25 });
+
+      const scrimRequests = messages
+        .filter(
+          msg =>
+            msg.author.bot &&
+            msg.content.includes("New Scrim Request")
+        )
+        .sort(
+          (a, b) => b.createdTimestamp - a.createdTimestamp
+        );
+
+      const scrimRequest = scrimRequests.first();
+
+      if (!scrimRequest) {
+        await message.reply(
+          "Could not find a recent scrim request."
+        );
+        return;
+      }
+
+      const teamName = getField(
+        scrimRequest.content,
+        "Team Name"
+      );
+
+      const preferredDate = getField(
+        scrimRequest.content,
+        "Preferred Date"
+      );
+
       const githubFile = await getGitHubMatchesFile();
       const matches = githubFile.matches;
 
@@ -131,12 +148,21 @@ client.on("messageCreate", async (message) => {
         status: "Approved"
       });
 
-      await updateGitHubMatchesFile(matches, githubFile.sha);
+      await updateGitHubMatchesFile(
+        matches,
+        githubFile.sha
+      );
 
-      await message.reply("✅ Scrim approved and pushed to the live website matches.json.");
+      await message.reply(
+        `✅ Scrim approved for ${teamName} and pushed live to matches page.`
+      );
+
     } catch (error) {
       console.error(error);
-      await message.reply("❌ Scrim approved, but I could not update GitHub matches.json.");
+
+      await message.reply(
+        "❌ Scrim approved but failed to update matches.json."
+      );
     }
   }
 
@@ -145,14 +171,4 @@ client.on("messageCreate", async (message) => {
   }
 });
 
-const token = (process.env.DISCORD_TOKEN || "").trim();
-
-console.log("TOKEN EXISTS:", token.length > 0);
-console.log("TOKEN LENGTH:", token.length);
-console.log("TOKEN HAS DOTS:", token.includes("."));
-
-if (!token) {
-  throw new Error("DISCORD_TOKEN is missing from Railway variables.");
-}
-
-client.login(token);
+client.login(process.env.DISCORD_TOKEN);
