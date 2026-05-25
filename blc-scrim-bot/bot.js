@@ -133,7 +133,8 @@ client.on("messageCreate", async (message) => {
 
       const githubFile = await getGitHubMatchesFile();
       const matches = githubFile.matches;
-
+      
+      console.log("MATCHES BEFORE PUSH:", matches);
       matches.push({
         team: teamName,
         date: formatDisplayDate(preferredDate),
