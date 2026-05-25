@@ -19,7 +19,8 @@ const filePath = "matches.json";
 
 console.log(`GitHub target: ${owner}/${repo}/${branch}/${filePath}`);
 client.once("ready", () => {
-  console.log("BLC Scrim Bot is online as " + client.user.tag);
+  console.log("NEW BOT VERSION LOADED");
+console.log(`BLC Scrim Bot is online as ${client.user.tag}`);
 });
 
 function getField(content, label) {
