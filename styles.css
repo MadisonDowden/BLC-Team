@@ -1405,8 +1405,10 @@ footer {
 }
 
 .hero-right img {
-  width: 360px;
-  opacity: 0.9;
+  width: 500px;
+  height: auto;
+  opacity: 0.95;
+
   filter:
     drop-shadow(0 0 30px #9b4dff)
     drop-shadow(0 0 60px rgba(255, 31, 191, 0.5));
@@ -1471,7 +1473,7 @@ footer {
 }
 
 .team-card img {
-  width: 90px;
+  width: 300px;
   filter: drop-shadow(0 0 18px #9b4dff);
 }
 
@@ -1601,7 +1603,7 @@ footer {
   transform: scale(1.12);
 }
 .sister-card img {
-  width: 190px;
+  width: 300px;
   height: auto;
   object-fit: contain;
 

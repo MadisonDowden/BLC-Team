@@ -18,8 +18,7 @@ const branch = process.env.GITHUB_BRANCH || "main";
 const filePath = "matches.json";
 
 client.once("ready", () => {
-  console.log("NEW BOT VERSION LOADED");
-console.log(`BLC Scrim Bot is online as ${client.user.tag}`);
+  console.log("BLC Scrim Bot is online as " + client.user.tag);
 });
 
 function getField(content, label) {
@@ -31,7 +30,9 @@ function getField(content, label) {
 function formatDisplayDate(dateString) {
   const date = new Date(dateString);
 
-  if (isNaN(date.getTime())) return dateString;
+  if (isNaN(date.getTime())) {
+    return dateString;
+  }
 
   return date.toLocaleString("en-US", {
     month: "long",
@@ -43,8 +44,7 @@ function formatDisplayDate(dateString) {
 }
 
 async function getGitHubMatchesFile() {
-  const url =
-    `https://api.github.com/repos/${owner}/${repo}/contents/${filePath}?ref=${branch}`;
+  const url = `https://api.github.com/repos/${owner}/${repo}/contents/${filePath}?ref=${branch}`;
 
   const response = await fetch(url, {
     headers: {
@@ -60,17 +60,17 @@ async function getGitHubMatchesFile() {
 
   const data = await response.json();
 
+  const fileContent = Buffer.from(data.content, "base64").toString("utf8");
+  const matches = fileContent.trim() ? JSON.parse(fileContent) : [];
+
   return {
     sha: data.sha,
-    matches: JSON.parse(
-      Buffer.from(data.content, "base64").toString("utf8")
-    )
+    matches: Array.isArray(matches) ? matches : []
   };
 }
 
 async function updateGitHubMatchesFile(matches, sha) {
-  const url =
-    `https://api.github.com/repos/${owner}/${repo}/contents/${filePath}`;
+  const url = `https://api.github.com/repos/${owner}/${repo}/contents/${filePath}`;
 
   const updatedContent = Buffer.from(
     JSON.stringify(matches, null, 2)
@@ -106,24 +106,26 @@ client.on("messageCreate", async (message) => {
   if (reply === "yes") {
     try {
       const messages = await message.channel.messages.fetch({
-        limit: 2,
+        limit: 5,
         before: message.id
       });
 
-      const scrimRequest = messages.first();
+      const scrimRequest = messages.find(msg =>
+        msg.content.includes("New Scrim Request")
+      );
 
-      if (
-        !scrimRequest ||
-        !scrimRequest.content.includes("New Scrim Request")
-      ) {
-        await message.reply(
-          "❌ Could not find the scrim request directly above this message."
-        );
+      if (!scrimRequest) {
+        await message.reply("❌ Could not find a scrim request above this message.");
         return;
       }
 
       const teamName = getField(scrimRequest.content, "Team Name");
       const preferredDate = getField(scrimRequest.content, "Preferred Date");
+
+      if (teamName === "Not listed" || preferredDate === "Not listed") {
+        await message.reply("❌ Missing Team Name or Preferred Date in the scrim request.");
+        return;
+      }
 
       const githubFile = await getGitHubMatchesFile();
       const matches = githubFile.matches;
@@ -139,16 +141,13 @@ client.on("messageCreate", async (message) => {
       await updateGitHubMatchesFile(matches, githubFile.sha);
 
       await message.reply(
-        `✅ Scrim approved for ${teamName} and pushed live to matches page.`
+        `✅ Scrim approved for ${teamName} and added to the matches page.`
       );
-
     } catch (error) {
       console.error("FULL ERROR:", error);
 
       await message.reply(
-        "❌ GitHub update failed:\n```" +
-        error.message +
-        "```"
+        "❌ GitHub update failed:\n```" + error.message + "```"
       );
     }
   }
