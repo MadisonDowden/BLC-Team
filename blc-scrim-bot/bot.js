@@ -93,6 +93,8 @@ async function updateGitHubMatchesFile(matches, sha) {
     })
   });
 
+  console.log("GitHub PUT status:", response.status);
+
   if (!response.ok) {
     const errorText = await response.text();
     throw new Error(`GitHub update failed: ${response.status} ${errorText}`);
