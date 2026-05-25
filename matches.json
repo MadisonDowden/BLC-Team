@@ -12,5 +12,12 @@
     "startTime": "2026-05-26T17:00",
     "mode": "Competitive",
     "status": "Approved"
+  },
+  {
+    "team": "BLC",
+    "date": "June 2, 2026 at 5:00 PM",
+    "startTime": "2026-06-02T17:00",
+    "mode": "Competitive",
+    "status": "Approved"
   }
 ]
