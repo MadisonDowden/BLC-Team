@@ -18,9 +18,10 @@ const branch = process.env.GITHUB_BRANCH || "main";
 const filePath = "matches.json";
 
 console.log(`GitHub target: ${owner}/${repo}/${branch}/${filePath}`);
+
 client.once("ready", () => {
   console.log("TEST TEST TEST - THIS IS THE RIGHT FILE");
-console.log(`BLC Scrim Bot is online as ${client.user.tag}`);
+  console.log(`BLC Scrim Bot is online as ${client.user.tag}`);
 });
 
 function getField(content, label) {
@@ -61,7 +62,6 @@ async function getGitHubMatchesFile() {
   }
 
   const data = await response.json();
-
   const fileContent = Buffer.from(data.content, "base64").toString("utf8");
   const matches = fileContent.trim() ? JSON.parse(fileContent) : [];
 
@@ -132,18 +132,11 @@ client.on("messageCreate", async (message) => {
       }
 
       const githubFile = await getGitHubMatchesFile();
-<<<<<<< HEAD
-const matches = githubFile.matches;
-
-console.log("MATCHES BEFORE PUSH:", matches);
-
-matches.push({
-=======
       const matches = githubFile.matches;
-      
+
       console.log("MATCHES BEFORE PUSH:", matches);
+
       matches.push({
->>>>>>> 5b0f025dc30efd3e8741412cdd550ffa954cb8e9
         team: teamName,
         date: formatDisplayDate(preferredDate),
         startTime: preferredDate,
