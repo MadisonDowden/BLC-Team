@@ -20,14 +20,17 @@ const filePath = "matches.json";
 console.log(`GitHub target: ${owner}/${repo}/${branch}/${filePath}`);
 
 client.once("ready", () => {
-  console.log("TEST TEST TEST - THIS IS THE RIGHT FILE");
   console.log(`BLC Scrim Bot is online as ${client.user.tag}`);
 });
+
+function cleanText(text) {
+  return text.replace(/\*/g, "").trim();
+}
 
 function getField(content, label) {
   const regex = new RegExp(`${label}:\\s*(.*)`, "im");
   const match = content.match(regex);
-  return match ? match[1].trim() : "Not listed";
+  return match ? cleanText(match[1]) : "Not listed";
 }
 
 function formatDisplayDate(dateString) {
@@ -133,8 +136,6 @@ client.on("messageCreate", async (message) => {
 
       const githubFile = await getGitHubMatchesFile();
       const matches = githubFile.matches;
-
-      console.log("MATCHES BEFORE PUSH:", matches);
 
       matches.push({
         team: teamName,

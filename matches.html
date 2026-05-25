@@ -61,23 +61,36 @@
 <script>
 let matchInfo = {
   teamOne: "BLC",
-  teamTwo: "RAZE",
-  displayDate: "May 25, 2026 • 8:00 PM EST",
-  startTime: "2026-05-25T20:00:00"
+  teamTwo: "TBD",
+  displayDate: "No scrim scheduled yet",
+  startTime: null
 };
 
-fetch("matches.json")
+fetch("matches.json?v=" + Date.now())
   .then(response => response.json())
   .then(matches => {
     if (matches.length > 0) {
       const latestMatch = matches[matches.length - 1];
 
       matchInfo.teamOne = "BLC";
-      matchInfo.teamTwo = latestMatch.team;
-     matchInfo.displayDate = latestMatch.date;
-matchInfo.startTime = latestMatch.startTime;
+      matchInfo.teamTwo = latestMatch.team.replace(/\*/g, "").trim();
+      matchInfo.startTime = latestMatch.startTime;
 
-      document.querySelector(".scrim-title").textContent = latestMatch.team;
+      const matchDateObj = new Date(matchInfo.startTime);
+
+      if (!isNaN(matchDateObj.getTime())) {
+        matchInfo.displayDate = matchDateObj.toLocaleString("en-US", {
+          month: "long",
+          day: "numeric",
+          year: "numeric",
+          hour: "numeric",
+          minute: "2-digit"
+        });
+      } else {
+        matchInfo.displayDate = latestMatch.date;
+      }
+
+      document.querySelector(".scrim-title").textContent = matchInfo.teamTwo;
       document.getElementById("teamOne").textContent = matchInfo.teamOne;
       document.getElementById("teamTwo").textContent = matchInfo.teamTwo;
       document.getElementById("matchDate").textContent = matchInfo.displayDate;
@@ -88,9 +101,19 @@ matchInfo.startTime = latestMatch.startTime;
   });
 
 function updateCountdown() {
+  if (!matchInfo.startTime) {
+    document.querySelector(".countdown").innerHTML = "<h2>No Scrim Scheduled</h2>";
+    return;
+  }
+
   const targetTime = new Date(matchInfo.startTime).getTime();
   const now = new Date().getTime();
   const distance = targetTime - now;
+
+  if (isNaN(targetTime)) {
+    document.querySelector(".countdown").innerHTML = "<h2>Date Not Set</h2>";
+    return;
+  }
 
   if (distance <= 0) {
     document.querySelector(".countdown").innerHTML = "<h2>LIVE NOW</h2>";
