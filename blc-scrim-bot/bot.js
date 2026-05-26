@@ -22,7 +22,10 @@ client.once("ready", () => {
 });
 
 function cleanText(text) {
-  return String(text || "").replace(/\*/g, "").trim();
+  return String(text || "")
+    .replace(/\*/g, "")
+    .replace(/^:+/, "")
+    .trim();
 }
 
 function getField(content, label) {
