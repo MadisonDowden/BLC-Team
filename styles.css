@@ -1900,3 +1900,28 @@ footer {
     font-size: 4.5rem;
   }
 }
+.match-box-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.match-box-link .match-box {
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+
+.match-box-link:hover .match-box {
+  transform: translateY(-4px);
+  box-shadow: 0 0 30px rgba(170, 100, 255, 0.35);
+}
+
+.view-matches-btn {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: 0.7rem 1.3rem;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.18);
+  font-weight: 600;
+}

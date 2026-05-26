@@ -6,7 +6,56 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="styles.css?v=301">
 </head>
+<script>
+function cleanHomeText(text) {
+  return String(text || "TBA").replace(/\*/g, "").trim();
+}
 
+function formatHomeDate(startTime, fallback) {
+  if (!startTime) return fallback || "No scrim scheduled";
+
+  const date = new Date(startTime);
+
+  if (isNaN(date.getTime())) {
+    return fallback || "No scrim scheduled";
+  }
+
+  return date.toLocaleString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+    hour: "numeric",
+    minute: "2-digit"
+  });
+}
+
+fetch("matches.json?v=" + Date.now())
+  .then(response => response.json())
+  .then(matches => {
+    const approved = matches
+      .filter(match => match.status === "Approved")
+      .filter(match => match.startTime)
+      .sort((a, b) => new Date(a.startTime) - new Date(b.startTime));
+
+    const nextMatch = approved.find(match => new Date(match.startTime) >= new Date()) || approved[approved.length - 1];
+
+    if (!nextMatch) {
+      document.getElementById("homeMatchDate").textContent = "No scrim scheduled";
+      document.getElementById("homeOpponent").textContent = "TBA";
+      document.getElementById("homeMatchTeam").textContent = "Check back soon";
+      return;
+    }
+
+    document.getElementById("homeMatchDate").textContent =
+      formatHomeDate(nextMatch.startTime, nextMatch.date);
+
+    document.getElementById("homeOpponent").textContent =
+      cleanHomeText(nextMatch.team);
+
+    document.getElementById("homeMatchTeam").textContent =
+      cleanHomeText(nextMatch.teamSlot) + " Competitive Matchup";
+  });
+</script>
 <body>
 
 <video autoplay muted loop playsinline id="bg-video">
@@ -117,15 +166,17 @@
     </div>
 
     <div class="upcoming-panel">
-      <h2>Upcoming Match</h2>
+  <h2>Upcoming Match</h2>
 
-      <div class="match-box">
-        <p class="match-date">Next Event</p>
-        <h3>BLC <span>VS</span> TBA</h3>
-        <p>VRML Competitive Matchup</p>
-        <a href="matches.html">View Matches</a>
-      </div>
+  <a href="matches.html" class="match-box-link">
+    <div class="match-box">
+      <p class="match-date" id="homeMatchDate">Loading...</p>
+      <h3>BLC <span>VS</span> <span id="homeOpponent">TBA</span></h3>
+      <p id="homeMatchTeam">VRML Competitive Matchup</p>
+      <span class="view-matches-btn">View Full Matches</span>
     </div>
+  </a>
+</div>
   </section>
 
 </main>
