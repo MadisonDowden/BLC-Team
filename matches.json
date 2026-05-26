@@ -50,5 +50,13 @@
     "startTime": "2026-05-25T23:00",
     "mode": "Competitive",
     "status": "Approved"
+  },
+  {
+    "teamSlot": "VAIL",
+    "team": "LBC",
+    "date": "May 25, 2026 at 1:00 PM",
+    "startTime": "2026-05-25T13:00",
+    "mode": "Competitive",
+    "status": "Approved"
   }
 ]
