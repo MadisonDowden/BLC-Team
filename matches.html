@@ -129,10 +129,17 @@ function getCountdown(startTime) {
 }
 
 function buildMatchCard(match, index) {
+
   const labels = [
     "MAIN ROSTER",
     "VAIL",
     "LITTLE SISTER COMPANY"
+  ];
+
+  const teamLogos = [
+    "biglittlecompany.png",
+    "vailteam.png",
+    "littlebigcompany.png"
   ];
 
   const colors = [
@@ -145,10 +152,11 @@ function buildMatchCard(match, index) {
 
   return `
     <article class="match-card-new ${colors[index]}">
+
       <p class="team-label">${labels[index]}</p>
 
       <div class="logo-row">
-        <img src="biglittlecompany.png" alt="Little Big Company Logo">
+        <img src="${teamLogos[index]}" alt="${labels[index]} Logo">
       </div>
 
       <div class="versus-stack">
@@ -171,6 +179,7 @@ function buildMatchCard(match, index) {
       </div>
 
       <p class="status-pill">${countdown.status}</p>
+
     </article>
   `;
 }
