@@ -21,18 +21,20 @@ client.once("ready", () => {
   console.log(`BLC Scrim Bot is online as ${client.user.tag}`);
 });
 
+function cleanText(text) {
+  return String(text || "").replace(/\*/g, "").trim();
+}
+
 function getField(content, label) {
   const regex = new RegExp(`${label}:\\s*(.*)`, "im");
   const match = content.match(regex);
-  return match ? match[1].trim() : "Not listed";
+  return match ? cleanText(match[1]) : "Not listed";
 }
 
 function formatDisplayDate(dateString) {
   const date = new Date(dateString);
 
-  if (isNaN(date.getTime())) {
-    return dateString;
-  }
+  if (isNaN(date.getTime())) return dateString;
 
   return date.toLocaleString("en-US", {
     month: "long",
@@ -55,26 +57,22 @@ async function getGitHubMatchesFile() {
   });
 
   if (!response.ok) {
-    throw new Error(`GitHub read failed: ${response.status}`);
+    const errorText = await response.text();
+    throw new Error(`GitHub read failed: ${response.status} ${errorText}`);
   }
 
   const data = await response.json();
-
-  const fileContent = Buffer
-    .from(data.content, "base64")
-    .toString("utf8");
-
-  const matches = fileContent.trim()
-    ? JSON.parse(fileContent)
-    : [];
+  const fileContent = Buffer.from(data.content, "base64").toString("utf8");
 
   return {
     sha: data.sha,
-    matches
+    matches: fileContent.trim() ? JSON.parse(fileContent) : []
   };
 }
 
-async function updateGitHubMatchesFile(matches, sha) {
+async function updateGitHubMatchesFile(matches) {
+  const latestFile = await getGitHubMatchesFile();
+
   const url =
     `https://api.github.com/repos/${owner}/${repo}/contents/${filePath}`;
 
@@ -92,16 +90,14 @@ async function updateGitHubMatchesFile(matches, sha) {
     body: JSON.stringify({
       message: "Update approved scrim match",
       content: updatedContent,
-      sha: sha,
+      sha: latestFile.sha,
       branch: branch
     })
   });
 
   if (!response.ok) {
     const errorText = await response.text();
-    throw new Error(
-      `GitHub update failed: ${response.status} ${errorText}`
-    );
+    throw new Error(`GitHub update failed: ${response.status} ${errorText}`);
   }
 }
 
@@ -123,26 +119,22 @@ client.on("messageCreate", async (message) => {
       );
 
       if (!scrimRequest) {
-        await message.reply(
-          "❌ Could not find a scrim request above this message."
-        );
+        await message.reply("❌ Could not find a scrim request above this message.");
         return;
       }
 
-      const teamName = getField(
-        scrimRequest.content,
-        "Team Name"
-      );
+      const teamName = getField(scrimRequest.content, "Team Name");
+      const teamSlot = getField(scrimRequest.content, "BLC Team");
+      const preferredDate = getField(scrimRequest.content, "Preferred Date");
 
-      const teamSlot = getField(
-        scrimRequest.content,
-        "BLC Team"
-      );
-
-      const preferredDate = getField(
-        scrimRequest.content,
-        "Preferred Date"
-      );
+      if (
+        teamName === "Not listed" ||
+        teamSlot === "Not listed" ||
+        preferredDate === "Not listed"
+      ) {
+        await message.reply("❌ Missing Team Name, BLC Team, or Preferred Date.");
+        return;
+      }
 
       const githubFile = await getGitHubMatchesFile();
       const matches = githubFile.matches;
@@ -156,20 +148,16 @@ client.on("messageCreate", async (message) => {
         status: "Approved"
       });
 
-      await updateGitHubMatchesFile(
-        matches,
-        githubFile.sha
-      );
+      await updateGitHubMatchesFile(matches);
 
       await message.reply(
         `✅ Scrim approved for ${teamName} (${teamSlot}) and added to the matches page.`
       );
-
     } catch (error) {
-      console.error(error);
+      console.error("FULL ERROR:", error);
 
       await message.reply(
-        `❌ GitHub update failed:\n${error.message}`
+        "❌ GitHub update failed:\n```" + error.message + "```"
       );
     }
   }
