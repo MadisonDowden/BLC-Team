@@ -3,7 +3,7 @@
 <head>
   <title>BLC Team Website :: Matches</title>
   <meta charset="utf-8">
-  <link rel="stylesheet" href="styles.css?v=3">
+  <link rel="stylesheet" href="styles.css?v=50">
 </head>
 
 <body>
@@ -24,112 +24,150 @@
   </nav>
 </header>
 
-<main class="matches-page">
+<main class="matches-showcase">
 
-  <img src="images/blc-player.png" class="match-player left-match-player" alt="BLC Player">
+  <section class="matches-title">
+    <h1><span>BLC</span> VS</h1>
+    <p>UPCOMING SCRIMS</p>
+  </section>
 
-  <img src="images/estf-player.png" class="match-player right-match-player" alt="ESTF Player">
+  <section id="matchesGrid" class="matches-grid"></section>
 
-  <section class="center-content">
-    <h1><span>BLC</span><br>VS</h1>
-    <p class="scrim-title">RAZE</p>
-
-    <div class="live-card">
-      <p class="next">NEXT SCRIM</p>
-
-      <div class="teams">
-        <span id="teamOne">BLC</span>
-        <span>VS</span>
-        <span id="teamTwo">RAZE</span>
-      </div>
-
-      <p id="matchDate" class="match-date">May 25, 2026 • 8:00 PM EST</p>
-
-      <p class="starts">SCRIMS START IN</p>
-
-      <div class="countdown">
-        <div><span id="days">00</span><small>DAYS</small></div>
-        <div><span id="hours">00</span><small>HOURS</small></div>
-        <div><span id="minutes">00</span><small>MINUTES</small></div>
-        <div><span id="seconds">00</span><small>SECONDS</small></div>
-      </div>
-    </div>
+  <section class="matches-bottom">
+    <p>THREE TEAMS. ONE COMPANY. ONE GOAL.</p>
   </section>
 
 </main>
 
 <script>
-let matchInfo = {
-  teamOne: "BLC",
-  teamTwo: "TBD",
-  displayDate: "No scrim scheduled yet",
-  startTime: null
-};
+const defaultMatches = [
+  { team: "OPEN", startTime: null, date: "NO SCRIM SCHEDULED" },
+  { team: "OPEN", startTime: null, date: "NO SCRIM SCHEDULED" },
+  { team: "OPEN", startTime: null, date: "NO SCRIM SCHEDULED" }
+];
+
+function cleanText(text) {
+  return String(text || "TBD").replace(/\*/g, "").trim();
+}
+
+function formatDate(startTime, fallback) {
+  if (!startTime) return "NO SCRIM SCHEDULED";
+
+  const date = new Date(startTime);
+
+  if (isNaN(date.getTime())) {
+    return fallback || "NO SCRIM SCHEDULED";
+  }
+
+  return date.toLocaleString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+    hour: "numeric",
+    minute: "2-digit"
+  });
+}
+
+function getCountdown(startTime) {
+  const target = new Date(startTime).getTime();
+
+  if (!startTime || isNaN(target)) {
+    return {
+      days: "--",
+      hours: "--",
+      minutes: "--",
+      seconds: "--",
+      status: "WAITING"
+    };
+  }
+
+  const now = new Date().getTime();
+  const distance = target - now;
+
+  if (distance <= 0) {
+    return {
+      days: "00",
+      hours: "00",
+      minutes: "00",
+      seconds: "00",
+      status: "LIVE NOW"
+    };
+  }
+
+  return {
+    days: String(Math.floor(distance / (1000 * 60 * 60 * 24))).padStart(2, "0"),
+    hours: String(Math.floor((distance / (1000 * 60 * 60)) % 24)).padStart(2, "0"),
+    minutes: String(Math.floor((distance / (1000 * 60)) % 60)).padStart(2, "0"),
+    seconds: String(Math.floor((distance / 1000) % 60)).padStart(2, "0"),
+    status: "UPCOMING"
+  };
+}
+
+function buildMatchCard(match, index) {
+  const teamName = cleanText(match.team);
+  const cardClass = ["pink-card", "purple-card", "blue-card"][index] || "purple-card";
+  const countdown = getCountdown(match.startTime);
+
+  return `
+    <article class="match-card-new ${cardClass}">
+     <p class="team-label">${["MAIN ROSTER", "VAIL", "LITTLE SISTER COMPANY"][index]}</p>
+
+      <div class="logo-row">
+        <img src="logo.webp" alt="BLC Logo">
+      </div>
+
+      <div class="versus-stack">
+        <h2>BLC</h2>
+        <div class="vs-badge">VS</div>
+        <h3>${teamName}</h3>
+      </div>
+
+      <p class="card-date">${formatDate(match.startTime, match.date)}</p>
+
+      <p class="starts-label">SCRIM STARTS IN</p>
+
+      <div class="countdown-new">
+        <div><span>${countdown.days}</span><small>DAYS</small></div>
+        <div><span>${countdown.hours}</span><small>HOURS</small></div>
+        <div><span>${countdown.minutes}</span><small>MINUTES</small></div>
+        <div><span>${countdown.seconds}</span><small>SECONDS</small></div>
+      </div>
+
+      <p class="status-pill">${countdown.status}</p>
+    </article>
+  `;
+}
+
+function renderMatches(matches) {
+  const grid = document.getElementById("matchesGrid");
+
+  const approvedMatches = matches
+    .filter(match => match.status === "Approved")
+    .slice(-3);
+
+  const displayMatches = [...approvedMatches];
+
+  while (displayMatches.length < 3) {
+    displayMatches.push(defaultMatches[displayMatches.length]);
+  }
+
+  grid.innerHTML = displayMatches
+    .map((match, index) => buildMatchCard(match, index))
+    .join("");
+}
 
 fetch("matches.json?v=" + Date.now())
   .then(response => response.json())
   .then(matches => {
-    if (matches.length > 0) {
-      const latestMatch = matches[matches.length - 1];
-
-      matchInfo.teamOne = "BLC";
-      matchInfo.teamTwo = latestMatch.team.replace(/\*/g, "").trim();
-      matchInfo.startTime = latestMatch.startTime;
-
-      const matchDateObj = new Date(matchInfo.startTime);
-
-      if (!isNaN(matchDateObj.getTime())) {
-        matchInfo.displayDate = matchDateObj.toLocaleString("en-US", {
-          month: "long",
-          day: "numeric",
-          year: "numeric",
-          hour: "numeric",
-          minute: "2-digit"
-        });
-      } else {
-        matchInfo.displayDate = latestMatch.date;
-      }
-
-      document.querySelector(".scrim-title").textContent = matchInfo.teamTwo;
-      document.getElementById("teamOne").textContent = matchInfo.teamOne;
-      document.getElementById("teamTwo").textContent = matchInfo.teamTwo;
-      document.getElementById("matchDate").textContent = matchInfo.displayDate;
-    }
-
-    updateCountdown();
-    setInterval(updateCountdown, 1000);
+    renderMatches(Array.isArray(matches) ? matches : []);
+    setInterval(() => {
+      renderMatches(Array.isArray(matches) ? matches : []);
+    }, 1000);
+  })
+  .catch(() => {
+    renderMatches(defaultMatches);
   });
-
-function updateCountdown() {
-  if (!matchInfo.startTime) {
-    document.querySelector(".countdown").innerHTML = "<h2>No Scrim Scheduled</h2>";
-    return;
-  }
-
-  const targetTime = new Date(matchInfo.startTime).getTime();
-  const now = new Date().getTime();
-  const distance = targetTime - now;
-
-  if (isNaN(targetTime)) {
-    document.querySelector(".countdown").innerHTML = "<h2>Date Not Set</h2>";
-    return;
-  }
-
-  if (distance <= 0) {
-    document.querySelector(".countdown").innerHTML = "<h2>LIVE NOW</h2>";
-    return;
-  }
-
-  document.getElementById("days").textContent =
-    Math.floor(distance / (1000 * 60 * 60 * 24));
-
-  document.getElementById("hours").textContent =
-    Math.floor((distance / (1000 * 60 * 60)) % 24);
-
-  document.getElementById("minutes").textContent =
-    Math.floor((distance / (1000 * 60)) % 60);
-
-  document.getElementById("seconds").textContent =
-    Math.floor((distance / 1000) % 60);
-}
 </script>
+
+</body>
+</html>
