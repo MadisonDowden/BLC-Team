@@ -42,5 +42,13 @@
     "startTime": "** 2026-05-25T23:00",
     "mode": "Competitive",
     "status": "Approved"
+  },
+  {
+    "teamSlot": "MAIN ROSTER",
+    "team": "KOJ",
+    "date": "May 25, 2026 at 11:00 PM",
+    "startTime": "2026-05-25T23:00",
+    "mode": "Competitive",
+    "status": "Approved"
   }
 ]
