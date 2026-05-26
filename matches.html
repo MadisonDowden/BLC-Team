@@ -41,13 +41,28 @@
 
 <script>
 const defaultMatches = [
-  { team: "OPEN", startTime: null, date: "NO SCRIM SCHEDULED" },
-  { team: "OPEN", startTime: null, date: "NO SCRIM SCHEDULED" },
-  { team: "OPEN", startTime: null, date: "NO SCRIM SCHEDULED" }
+  {
+    teamSlot: "MAIN ROSTER",
+    team: "OPEN",
+    startTime: null,
+    date: "NO SCRIM SCHEDULED"
+  },
+  {
+    teamSlot: "VAIL",
+    team: "OPEN",
+    startTime: null,
+    date: "NO SCRIM SCHEDULED"
+  },
+  {
+    teamSlot: "LITTLE SISTER COMPANY",
+    team: "OPEN",
+    startTime: null,
+    date: "NO SCRIM SCHEDULED"
+  }
 ];
 
 function cleanText(text) {
-  return String(text || "TBD").replace(/\*/g, "").trim();
+  return String(text || "OPEN").replace(/\*/g, "").trim();
 }
 
 function formatDate(startTime, fallback) {
@@ -69,9 +84,19 @@ function formatDate(startTime, fallback) {
 }
 
 function getCountdown(startTime) {
+  if (!startTime) {
+    return {
+      days: "--",
+      hours: "--",
+      minutes: "--",
+      seconds: "--",
+      status: "WAITING"
+    };
+  }
+
   const target = new Date(startTime).getTime();
 
-  if (!startTime || isNaN(target)) {
+  if (isNaN(target)) {
     return {
       days: "--",
       hours: "--",
@@ -104,13 +129,23 @@ function getCountdown(startTime) {
 }
 
 function buildMatchCard(match, index) {
-  const teamName = cleanText(match.team);
-  const cardClass = ["pink-card", "purple-card", "blue-card"][index] || "purple-card";
+  const labels = [
+    "MAIN ROSTER",
+    "VAIL",
+    "LITTLE SISTER COMPANY"
+  ];
+
+  const colors = [
+    "pink-card",
+    "purple-card",
+    "blue-card"
+  ];
+
   const countdown = getCountdown(match.startTime);
 
   return `
-    <article class="match-card-new ${cardClass}">
-     <p class="team-label">${["MAIN ROSTER", "VAIL", "LITTLE SISTER COMPANY"][index]}</p>
+    <article class="match-card-new ${colors[index]}">
+      <p class="team-label">${labels[index]}</p>
 
       <div class="logo-row">
         <img src="logo.webp" alt="BLC Logo">
@@ -119,10 +154,12 @@ function buildMatchCard(match, index) {
       <div class="versus-stack">
         <h2>BLC</h2>
         <div class="vs-badge">VS</div>
-        <h3>${teamName}</h3>
+        <h3>${cleanText(match.team)}</h3>
       </div>
 
-      <p class="card-date">${formatDate(match.startTime, match.date)}</p>
+      <p class="card-date">
+        ${formatDate(match.startTime, match.date)}
+      </p>
 
       <p class="starts-label">SCRIM STARTS IN</p>
 
@@ -139,33 +176,40 @@ function buildMatchCard(match, index) {
 }
 
 function renderMatches(matches) {
-  const grid = document.getElementById("matchesGrid");
+  const slots = [
+    "MAIN ROSTER",
+    "VAIL",
+    "LITTLE SISTER COMPANY"
+  ];
 
-  const approvedMatches = matches
-    .filter(match => match.status === "Approved")
-    .slice(-3);
+  const displayMatches = slots.map((slot, index) => {
+    const teamMatch = matches
+      .filter(match =>
+        match.status === "Approved" &&
+        match.teamSlot === slot
+      )
+      .pop();
 
-  const displayMatches = [...approvedMatches];
+    return teamMatch || defaultMatches[index];
+  });
 
-  while (displayMatches.length < 3) {
-    displayMatches.push(defaultMatches[displayMatches.length]);
-  }
-
-  grid.innerHTML = displayMatches
-    .map((match, index) => buildMatchCard(match, index))
-    .join("");
+  document.getElementById("matchesGrid").innerHTML =
+    displayMatches
+      .map((match, index) => buildMatchCard(match, index))
+      .join("");
 }
 
 fetch("matches.json?v=" + Date.now())
   .then(response => response.json())
   .then(matches => {
-    renderMatches(Array.isArray(matches) ? matches : []);
+    renderMatches(matches);
+
     setInterval(() => {
-      renderMatches(Array.isArray(matches) ? matches : []);
+      renderMatches(matches);
     }, 1000);
   })
   .catch(() => {
-    renderMatches(defaultMatches);
+    renderMatches([]);
   });
 </script>
 
