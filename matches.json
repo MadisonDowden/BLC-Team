@@ -74,5 +74,13 @@
     "startTime": "2026-05-27T20:00",
     "mode": "Competitive",
     "status": "Approved"
+  },
+  {
+    "teamSlot": "MAIN ROSTER",
+    "team": "Prime",
+    "date": "May 27, 2026 at 9:00 PM",
+    "startTime": "2026-05-27T21:00",
+    "mode": "Competitive",
+    "status": "Approved"
   }
 ]
