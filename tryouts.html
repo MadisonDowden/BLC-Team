@@ -4,7 +4,7 @@
   <title>BLC Team Website :: Tryouts</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="styles.css?v=2">
+  <link rel="stylesheet" href="styles.css?v=999">
 </head>
 
 <body>
@@ -12,7 +12,7 @@
 <header class="site-header">
   <div class="brand">
     <a href="index.html">
-     <img src="biglittlecompany.png" alt="Little Big Company Logo">
+      <img src="biglittlecompany.png" alt="Little Big Company Logo">
     </a>
   </div>
 
@@ -37,7 +37,6 @@
   <section class="tryout-hero">
     <div class="tryout-overlay">
       <h3>Join BLC</h3>
-
       <p>
         Interested in joining Big Little Company? Submit an application below
         for either the Breachers roster or the VAIL roster.
@@ -50,14 +49,37 @@
     <div class="requirement-card">
       <h3>Requirements</h3>
 
-      <ul>
-        <li>Be based in North America, with exceptions possible</li>
-        <li>No one under 16 years of age</li>
-        <li>Follow the IGL or team as a collective</li>
-        <li>Be respectful toward teammates and opponents</li>
-        <li>Do not bring or develop a huge ego</li>
-        <li>Focus on improving and having fun with the team</li>
-      </ul>
+      <div class="requirements-split">
+
+        <div class="requirements-side">
+          <h4>BREACHERS</h4>
+          <ul>
+            <li>Be based in North America, with exceptions possible</li>
+            <li>No one under 16 years of age</li>
+            <li>Follow the IGL or team as a collective</li>
+            <li>Be respectful toward teammates and opponents</li>
+            <li>Do not bring or develop a huge ego</li>
+            <li>Focus on improving and having fun with the team</li>
+          </ul>
+        </div>
+
+        <div class="requirements-side">
+          <h4>VAIL</h4>
+          <ul>
+            <li>Be based in North America, with exceptions possible</li>
+            <li>Follow the IGL or team as a collective</li>
+            <li>Be respectful toward teammates and opponents</li>
+            <li>Do not bring or develop a huge ego</li>
+            <li>Focus on improving and having fun with the team</li>
+            <li>
+              <strong>Age Requirement: 13+</strong><br>
+              Exceptions may be considered based on maturity, communication,
+              skill level, and overall team judgment.
+            </li>
+          </ul>
+        </div>
+
+      </div>
     </div>
 
     <div class="form-card">
@@ -101,67 +123,6 @@
 <footer>
   <p>&copy; 2026 Big Little Company | BLC</p>
 </footer>
-
-<script>
-const form = document.getElementById("tryoutForm");
-
-form.addEventListener("submit", async function(event) {
-  event.preventDefault();
-
-  const webhookURL = "https://canary.discord.com/api/webhooks/1507491236179873813/oO_yCCqPvyCf83J8Ax2LxR-z0jvDIOUvbKZj8lq4mttjRS3RDKl6g-EoEZOJA3qJvgE-";
-
-  const gamertag = document.getElementById("gamertag").value;
-  const discord = document.getElementById("discord").value;
-  const game = document.getElementById("game").value;
-  const role = document.getElementById("role").value;
-  const availability = document.getElementById("availability").value;
-  const message = document.getElementById("message").value;
-
-  let mention = "";
-
-  if (game === "Breachers") {
-    mention = "<@1502149256792899684>";
-  } else if (game === "VAIL") {
-    mention = "<@1126953377746665552>";
-  }
-
-  const discordMessage = {
-    content:
-      mention + "\n\n" +
-      "**New BLC Tryout Application**\n\n" +
-      "**Game Tryout:** " + game + "\n" +
-      "**Gamertag:** " + gamertag + "\n" +
-      "**Discord:** " + discord + "\n" +
-      "**Preferred Role:** " + role + "\n" +
-      "**Availability:** " + availability + "\n" +
-      "**Why they want to join:** " + message
-  };
-
-  try {
-    const response = await fetch(webhookURL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(discordMessage)
-    });
-
-    if (response.ok) {
-      document.getElementById("submissionMessage").textContent =
-        "Application submitted successfully!";
-
-      form.reset();
-    } else {
-      document.getElementById("submissionMessage").textContent =
-        "There was an error submitting the application.";
-    }
-
-  } catch(error) {
-    document.getElementById("submissionMessage").textContent =
-      "Could not connect to Discord.";
-  }
-});
-</script>
 
 </body>
 </html>
