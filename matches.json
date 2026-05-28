@@ -58,5 +58,29 @@
     "startTime": "2026-05-25T13:00",
     "mode": "Competitive",
     "status": "Approved"
+  },
+  {
+    "teamSlot": "LITTLE SISTER COMPANY",
+    "team": "REKT",
+    "date": "May 25, 2026 at 1:00 PM",
+    "startTime": "2026-05-25T13:00",
+    "mode": "Competitive",
+    "status": "Approved"
+  },
+  {
+    "teamSlot": "MAIN ROSTER",
+    "team": "Synfinite",
+    "date": "May 27, 2026 at 8:00 PM",
+    "startTime": "2026-05-27T20:00",
+    "mode": "Competitive",
+    "status": "Approved"
+  },
+  {
+    "teamSlot": "MAIN ROSTER",
+    "team": "Prime",
+    "date": "May 27, 2026 at 9:00 PM",
+    "startTime": "2026-05-27T21:00",
+    "mode": "Competitive",
+    "status": "Approved"
   }
 ]
