@@ -620,12 +620,17 @@ footer {
 }
 
 .hunter-img {
-  top: -290px;
+  top: -300px;
   width: 290px;
   height: 960px;
   z-index: 50;
 }
-
+.NAT-img {
+  top: -250px;
+  width: 400px;
+  height: 960px;
+  z-index: 50;
+}
 .card-bottom {
   position: absolute;
   left: 18px;
