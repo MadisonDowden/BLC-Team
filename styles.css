@@ -631,6 +631,12 @@ footer {
   height: 960px;
   z-index: 50;
 }
+.blazeshark-img {
+  top: -290px;
+  width: 400px;
+  height: 960px;
+  z-index: 50;
+}
 .card-bottom {
   position: absolute;
   left: 18px;
